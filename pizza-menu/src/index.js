@@ -48,6 +48,7 @@ const pizzaData = [
     },
 ];
 
+
 function App() {
     return (
         <div className="container">
@@ -71,20 +72,23 @@ function Header() {
 
 
 function Menu() {
+    const pizzas = [];
+    const hasPizzas = pizzas.length > 0;
+
     return (
         <main className="menu">
             <h2>Our menu</h2>
-
-            <ul className="pizzas">
-                {pizzaData.map(pizza => <Pizza pizzaObj={pizza} key={pizza.name}/>)}
-            </ul>
+            {hasPizzas && (
+                <ul className="pizzas">
+                    {pizzas.map(pizza => <Pizza pizzaObj={pizza} key={pizza.name}/>)}
+                </ul>
+            )}
         </main>
     );
 }
 
 
 function Pizza(props) {
-    console.log(props);
 
     return (
         <li className="pizza">
@@ -109,7 +113,12 @@ function Footer() {
 
     return (
         <footer className="footer">
-            {new Date().toLocaleTimeString()} We're currently open
+            {isOpen && (
+                <div className="order">
+                    <p>We're open until {closeHour}</p>
+                    <button className="btn">Order</button>
+                </div>
+            )}
         </footer>
     );
     // return React.createElement("footer", null, "We are currently open");
@@ -117,6 +126,7 @@ function Footer() {
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
     <React.StrictMode>
         <App />
