@@ -76,6 +76,7 @@ function Menu() {
     const hasPizzas = pizzas.length;
 
     return (
+
         <main className="menu">
             <h2>Our menu</h2>
             {hasPizzas > 0 ? (
