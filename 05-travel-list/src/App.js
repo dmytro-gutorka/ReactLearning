@@ -18,11 +18,15 @@ export default function App() {
         ))
     }
 
+    function handleClearItems() {
+        setItems([])
+    }
+
     return (
       <div className="app">
         <Logo/>
         <Form onAddItems={handleAddItems}/>
-        <PackingList items={items} onDeleteItem={handleDeleteItem} onUpdateItem={handleToggleItem}/>
+        <PackingList items={items} onDeleteItem={handleDeleteItem} onUpdateItem={handleToggleItem} onClearItems={handleClearItems}/>
         <Stats items={items}/>
       </div>
   )
@@ -38,7 +42,6 @@ function Form({ onAddItems }) {
     const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState(1);
 
-
     function handleSubmit(e) {
         e.preventDefault()
 
@@ -52,29 +55,27 @@ function Form({ onAddItems }) {
         setQuantity(1)
     }
 
-
-
-  return (
-      <form className="add-form" onSubmit={handleSubmit}>
-        <h3>What do you need for your 😍 trip ?</h3>
-          <select value={quantity} onChange={(e) => setQuantity(Number(e.target.value))}>
-              {Array.from({length: 20}, (_, i) => i + 1).map(num => (
-                      <option value={num} key={num}>{num}</option>
-              ))}
-          </select>
-          <input
+    return (
+        <form className="add-form" onSubmit={handleSubmit}>
+            <h3>What do you need for your 😍 trip ?</h3>
+                <select value={quantity} onChange={(e) => setQuantity(Number(e.target.value))}>
+                  {Array.from({length: 20}, (_, i) => i + 1).map(num => (
+                          <option value={num} key={num}>{num}</option>
+                  ))}
+                </select>
+            <input
               type="text"
               placeholder="Item..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-          />
-          <button>Add</button>
-      </form>
-  )
+            />
+            <button>Add</button>
+        </form>
+    )
 }
 
 
-function PackingList({ items, onDeleteItem, onUpdateItem }) {
+function PackingList({ items, onDeleteItem, onUpdateItem, onClearItems }) {
     const [sortBy, setSortBy] = useState('input')
     let sortedItems;
 
@@ -104,6 +105,7 @@ function PackingList({ items, onDeleteItem, onUpdateItem }) {
                  <option value="description">Sort by description</option>
                  <option value="packed">Sort by packed status</option>
              </select>
+             <button className="" onClick={onClearItems}>Clear list</button>
          </div>
      </div>
   )
