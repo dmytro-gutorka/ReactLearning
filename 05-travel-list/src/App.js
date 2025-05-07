@@ -1,18 +1,25 @@
 import {useState} from "react";
 
-const initialItems = [
-    { id: 1, description: "Passports", quantity: 2, packed: false },
-    { id: 2, description: "Socks", quantity: 12, packed: false },
-    { id: 3, description: "Charger", quantity: 1, packed: true },
-];
+// const initialItems = [
+//     { id: 1, description: "Passports", quantity: 2, packed: false },
+//     { id: 2, description: "Socks", quantity: 12, packed: false },
+//     { id: 3, description: "Charger", quantity: 1, packed: true },
+// ];
 
 
 export default function App() {
-  return (
+    const [items, setItems] = useState([]);
+
+    function handleAddItems(item) {
+        setItems(items => [...items, item])
+    }
+
+
+    return (
       <div className="app">
         <Logo/>
-        <Form/>
-        <PackingList/>
+        <Form onAddItems={handleAddItems}/>
+        <PackingList items={items}/>
         <Stats/>
       </div>
   )
@@ -24,7 +31,7 @@ function Logo() {
 }
 
 
-function Form() {
+function Form({ onAddItems }) {
     const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState(1);
 
@@ -34,14 +41,13 @@ function Form() {
 
         if (!description) return;
 
-        const newItem = { description, quantity, packed: false, id: 11}
+        const newItem = { description, quantity, packed: false, id: Date.now()}
 
-        console.log(newItem)
+        onAddItems(newItem)
 
         setDescription('')
         setQuantity(1)
     }
-
 
   return (
       <form className="add-form" onSubmit={handleSubmit}>
@@ -63,11 +69,11 @@ function Form() {
 }
 
 
-function PackingList() {
+function PackingList({ items }) {
   return (
      <div className="list">
          <ul>
-             {initialItems.map(item => (<Item item={item} key={item.id}/>))}
+             {items.map(item => (<Item item={item} key={item.id}/>))}
          </ul>
      </div>
   )
