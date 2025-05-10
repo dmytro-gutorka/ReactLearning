@@ -33,6 +33,7 @@ export default function App() {
 
     function handleAddFriend(friend) {
         setFriends(friends => [...friends, friend])
+        setShowAddFriend(false)
     }
 
   return (
@@ -40,8 +41,8 @@ export default function App() {
         <div className="sidebar">
             <FriendsList friends={friends}/>
             {showAddFriend &&
-                <FormAddFriend onClick={handleAddFriend}/>}
-            <Button onAddFriend={handleShowAddFriend}>{!showAddFriend ? "Add friend" : "Close"}</Button>
+                <FormAddFriend onAddFriend={handleAddFriend} />}
+            <Button onClick={handleShowAddFriend}>{!showAddFriend ? "Add friend" : "Close"}</Button>
         </div>
           <FormSplitBill/>
       </div>
