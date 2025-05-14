@@ -13,9 +13,9 @@ const starContainerStyle = {
 
 
 export default function StarRating({ maxRating = 5, color = '#fcc419', size = 48, defaultRating = 0, onMovieRating}) {
+
     const [rating, setRating] = useState(defaultRating)
     const [tempRating, setTempRating] = useState(0)
-
 
     function handleRating(rating) {
         setRating(rating)
@@ -48,6 +48,7 @@ export default function StarRating({ maxRating = 5, color = '#fcc419', size = 48
         </div>
     )
 }
+
 
 function Star({ onRate, full, onHoverIn, onHoverOut, color, size }) {
 
