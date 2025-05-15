@@ -261,7 +261,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     const [userRating, setUserRating] = useState('')
 
     const isInWatchedList = watched.find(movie => movie.imdbID === selectedId)
-    const wacthedUserRating = isInWatchedList?.userRating
+    const watchedUserRating = isInWatchedList?.userRating
 
     const {
         Title: title,
@@ -274,7 +274,6 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
         Actors: actors,
         Director: director,
         Genre: genre,
-
     } = movie
 
     function handleAdd() {
@@ -291,6 +290,13 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
         onAddWatched(newWatchedMovie)
         onCloseMovie(null)
     }
+
+    useEffect(function() {
+        if (!title) return
+        document.title = `Movie | ${title}`
+
+        return () => document.title = 'usePopcorn'
+    }, [title])
 
     useEffect(function() {
 
@@ -324,7 +330,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
                     </header>
                     <section>
                         <div className="rating">
-                            {isInWatchedList ? <p>You rated this movie ⭐️ {wacthedUserRating} ⭐️  </p> : (
+                            {isInWatchedList ? <p>You rated this movie ⭐️ {watchedUserRating} ⭐️  </p> : (
                                 <>
                                     <StarRating maxRating={10} size={24} onSetRating={setUserRating}/>
                                     {userRating > 0 && (
