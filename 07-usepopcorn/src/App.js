@@ -35,11 +35,23 @@ export default function App() {
     const [watched, setWatched] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState("")
+    const [query, setQuery] = useState("");
 
-    const query = 'sdfgdfgs'
+    // useEffect(function() {
+    //     console.log('After the initial render')
+    // }, [])
+    //
+    // useEffect(function() {
+    //     console.log('After every render')
+    // })
+    //
+    // console.log('During render')
+    //
+    // useEffect(function() {
+    //     console.log('In case query state changes')
+    // }, [query])
 
     useEffect(function() {
-        setIsLoading(true)
 
         async function fetchMovies() {
 
@@ -56,23 +68,33 @@ export default function App() {
                 setIsLoading(false)
             }
 
-            catch(err) {
+            catch (err) {
                 setError(err.message)
             }
 
             finally {
                 setIsLoading(false)
             }
-
         }
+
+        if (query.length < 3) {
+            setMovies([])
+            setError("")
+            return;
+        }
+
+        setIsLoading(true)
+        setError('')
+
         fetchMovies()
-    }, [])
+
+    }, [query])
 
     return (
         <>
             <NavBar>
                 <Logo />
-                <Search />
+                <Search query={query} setQuery={setQuery}/>
                 <NumResults movies={movies} />
             </NavBar>
             <Main>
@@ -118,8 +140,7 @@ function NavBar({ children }) {
 }
 
 
-function Search() {
-    const [query, setQuery] = useState("");
+function Search({ query, setQuery }) {
 
     return (
         <input
