@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import StarRating from "./StarRating";
 import {useMovies} from "./useMovies";
 import {useLocalStorageState} from "./useLocalStorageState";
+import {useKey} from "./useKey";
 
 
 const KEY = 'd0e93483'
@@ -105,20 +106,11 @@ function NavBar({ children }) {
 function Search({ query, setQuery }) {
     const inputEl = useRef(null);
 
-    useEffect(function() {
-
-        function callback(e) {
-            if (document.activeElement === inputEl.current) return
-
-            if (e.code === "Enter") {
-                inputEl.current.focus()
-                setQuery("")
-            }
-        }
-
-        document.addEventListener('keydown', callback)
-        return () => document.removeEventListener('keydown', callback)
-    }, [setQuery])
+    useKey('Enter', function() {
+        if (document.activeElement === inputEl.current) return
+        inputEl.current.focus()
+        setQuery("")
+    } )
 
     return (
         <input
@@ -254,27 +246,16 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
         onCloseMovie(null)
     }
 
+    useKey('Escape', onCloseMovie)
+
     useEffect(function() {
         if (userRating) countRef.current = countRef.current + 1;
     }, [userRating])
 
     useEffect(function() {
-        function callback(e) {
-            if (e.code === 'Escape') onCloseMovie()
-        }
-
-        document.addEventListener('keydown', callback)
-
-        return () => document.removeEventListener('keydown', callback)
-    }, [onCloseMovie])
-
-    useEffect(function() {
         if (!title) return
-
         document.title = `Movie | ${title}`
-
         return () => document.title = 'usePopcorn'
-
     }, [title])
 
     useEffect(function() {
