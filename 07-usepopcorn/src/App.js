@@ -33,11 +33,14 @@ const KEY = 'd0e93483'
 
 export default function App() {
     const [movies, setMovies] = useState([]);
-    const [watched, setWatched] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState("")
     const [query, setQuery] = useState("");
     const [selectedId, setSelectedId] = useState(null)
+    const [watched, setWatched] = useState(function() {
+        return JSON.parse(localStorage.getItem('watched'))
+    })
+
 
     function handleSelectMovie(id) {
         setSelectedId((selectedId) => selectedId === id ? null : id)
@@ -47,9 +50,8 @@ export default function App() {
         setSelectedId(null)
     }
 
-
     function handleAddWatched(movie) {
-        setWatched(watched => [...watched, movie])
+        setWatched(watched => [...watched, movie]);
     }
 
     function handleDeleteWatched(id) {
@@ -57,8 +59,13 @@ export default function App() {
     }
 
     useEffect(function() {
-        const controller = new AbortController();
+        localStorage.setItem('watched', JSON.stringify(watched))
 
+
+    }, [watched])
+
+    useEffect(function() {
+        const controller = new AbortController();
 
         async function fetchMovies() {
 
@@ -138,6 +145,7 @@ export default function App() {
         </>
   );
 }
+
 
 function ErrorMessage({ message }) {
     return (
@@ -282,6 +290,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     } = movie
 
     function handleAdd() {
+
         const newWatchedMovie = {
             imdbID: selectedId,
             imdbRating: +imdbRating,
@@ -308,9 +317,11 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 
     useEffect(function() {
         if (!title) return
+
         document.title = `Movie | ${title}`
 
         return () => document.title = 'usePopcorn'
+
     }, [title])
 
     useEffect(function() {
@@ -320,7 +331,6 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
             const data = await res.json()
 
             setMovie(data)
-
             setIsLoading(false)
         }
 
@@ -345,12 +355,10 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
                     </header>
                     <section>
                         <div className="rating">
-                            {isInWatchedList ? <p>You rated this movie ⭐️ {watchedUserRating} ⭐️  </p> : (
+                            {isInWatchedList ? <p>You rated this movie ⭐️ {watchedUserRating} ⭐️ </p> : (
                                 <>
                                     <StarRating maxRating={10} size={24} onSetRating={setUserRating}/>
-                                    {userRating > 0 && (
-                                        <button className="btn-add" onClick={handleAdd}>Add to list</button>
-                                    )}
+                                    {userRating > 0 && (<button className="btn-add" onClick={handleAdd}>Add to list</button>)}
                                 </>
                             )}
                         </div>
