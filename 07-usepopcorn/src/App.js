@@ -177,10 +177,6 @@ function NavBar({ children }) {
 function Search({ query, setQuery }) {
     const inputEl = useRef(null);
 
-    // useEffect(function() {
-    //     inputEl.current.focus()
-    // }, [])
-
     useEffect(function() {
 
         function callback(e) {
@@ -194,7 +190,7 @@ function Search({ query, setQuery }) {
 
         document.addEventListener('keydown', callback)
         return () => document.removeEventListener('keydown', callback)
-    }, [])
+    }, [setQuery])
 
     return (
         <input
@@ -295,6 +291,8 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     const [isLoading, setIsLoading] = useState(false)
     const [userRating, setUserRating] = useState('')
 
+    const countRef = useRef(0);
+
     const isInWatchedList = watched.find(movie => movie.imdbID === selectedId)
     const watchedUserRating = isInWatchedList?.userRating
 
@@ -321,11 +319,16 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
             year,
             poster,
             userRating,
+            countRatingDecisions: countRef.current
         }
 
         onAddWatched(newWatchedMovie)
         onCloseMovie(null)
     }
+
+    useEffect(function() {
+        if (userRating) countRef.current = countRef.current + 1;
+    }, [userRating])
 
     useEffect(function() {
         function callback(e) {
