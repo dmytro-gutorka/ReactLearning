@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import StarRating from "./StarRating";
 
 
@@ -154,8 +154,8 @@ function ErrorMessage({ message }) {
             {message}
         </p>
     )
-
 }
+
 
 function Loader() {
     return (
@@ -175,6 +175,26 @@ function NavBar({ children }) {
 
 
 function Search({ query, setQuery }) {
+    const inputEl = useRef(null);
+
+    // useEffect(function() {
+    //     inputEl.current.focus()
+    // }, [])
+
+    useEffect(function() {
+
+        function callback(e) {
+            if (document.activeElement === inputEl.current) return
+
+            if (e.code === "Enter") {
+                inputEl.current.focus()
+                setQuery("")
+            }
+        }
+
+        document.addEventListener('keydown', callback)
+        return () => document.removeEventListener('keydown', callback)
+    }, [])
 
     return (
         <input
@@ -183,6 +203,7 @@ function Search({ query, setQuery }) {
             placeholder="Search movies..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            ref={inputEl}
         />
     )
 }
@@ -220,6 +241,7 @@ function Main({ children }) {
 
 
 function Box({ children }) {
+
     const [isOpen, setIsOpen] = useState(true);
 
     return (
@@ -373,6 +395,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 
 
 function WatchedSummary({ watched }) {
+
     const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
     const avgUserRating = average(watched.map((movie) => movie.userRating));
     const avgRuntime = average(watched.map((movie) => movie.runtime));
