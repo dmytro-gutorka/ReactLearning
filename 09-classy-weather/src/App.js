@@ -38,7 +38,7 @@ function formatDay(dateStr) {
 class App extends React.Component {
 
     state = {
-        location: 'lisbon',
+        location: '',
         isLoading: false,
         displayLocation: '',
         weather: {}
@@ -63,7 +63,7 @@ class App extends React.Component {
             this.setState({ weather: weatherData.daily})
         }
         catch (err) {
-            console.log(err);
+            console.error(err);
         }
         finally {
             this.setState({ isLoading: false })
@@ -76,15 +76,28 @@ class App extends React.Component {
         })
     }
 
+    componentDidMount() {
+        this.setState({location: localStorage.getItem('location') || ''})
+
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.location.length < 2) return
+
+        if (this.state.location !== prevState.location) {
+            this.fetchWeather();
+        }
+
+        localStorage.setItem('location', this.state.location)
+    }
+
     render() {
 
         return (
             <div className="app">
                 <h1>Classy Weather</h1>
                 <Input onInputChange={this.handleInput} location={this.state.location}/>
-                <button onClick={this.fetchWeather}>Get weather</button>
                 {this.state.isLoading && <p className="loader">Loading...</p>}
-
                 {this.state.weather.weathercode &&
                     <Weather weather={this.state.weather} location={this.state.displayLocation}/>
                 }
@@ -118,6 +131,10 @@ export default App;
 
 
 class Weather extends React.Component {
+
+    componentWillUnmount() {
+        console.log('disappear')
+    }
 
     render() {
 
