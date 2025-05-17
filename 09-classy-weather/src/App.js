@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 function getWeatherIcon(wmoCode) {
     const icons = new Map([
         [[0], "☀️"],
@@ -18,6 +19,7 @@ function getWeatherIcon(wmoCode) {
     return icons.get(arr);
 }
 
+
 function convertToFlag(countryCode) {
     const codePoints = countryCode
         .toUpperCase()
@@ -26,24 +28,23 @@ function convertToFlag(countryCode) {
     return String.fromCodePoint(...codePoints);
 }
 
+
 function formatDay(dateStr) {
     return new Intl.DateTimeFormat("en", {weekday: "short"})
         .format(new Date(dateStr));
 }
 
 
-
 class App extends React.Component {
 
-    constructor(props) {
-        super(props)
-
-        this.fetchWeather = this.fetchWeather.bind(this)
-
-        this.state = { location: 'lisbon', isLoading: false, displayLocation: '', weather: {} }
+    state = {
+        location: 'lisbon',
+        isLoading: false,
+        displayLocation: '',
+        weather: {}
     }
 
-    async fetchWeather() {
+    fetchWeather = async () => {
         try {
             this.setState({ isLoading: true })
 
@@ -62,11 +63,17 @@ class App extends React.Component {
             this.setState({ weather: weatherData.daily})
         }
         catch (err) {
-            console.err(err);
+            console.log(err);
         }
         finally {
             this.setState({ isLoading: false })
         }
+    }
+
+    handleInput = (value) => {
+        this.setState(() => {
+            return {location: value}
+        })
     }
 
     render() {
@@ -74,14 +81,7 @@ class App extends React.Component {
         return (
             <div className="app">
                 <h1>Classy Weather</h1>
-                <div>
-                    <input
-                        type="text"
-                        placeholder="search for location..."
-                        value={this.state.location}
-                        onChange={(e) => this.setState({location: e.target.value})}
-                    />
-                </div>
+                <Input onInputChange={this.handleInput} location={this.state.location}/>
                 <button onClick={this.fetchWeather}>Get weather</button>
                 {this.state.isLoading && <p className="loader">Loading...</p>}
 
@@ -93,12 +93,34 @@ class App extends React.Component {
     }
 }
 
+
+class Input extends React.Component {
+
+    render() {
+
+        const {onInputChange, location} = this.props
+
+        return (
+            <div>
+                <input
+                    type="text"
+                    placeholder="search for location..."
+                    value={location}
+                    onChange={(e) => onInputChange(e.target.value)}
+                />
+            </div>
+        )
+    }
+}
+
+
 export default App;
 
 
 class Weather extends React.Component {
 
     render() {
+
         const {
             temperature_2m_max: max,
             temperature_2m_min: min,
@@ -126,6 +148,7 @@ class Weather extends React.Component {
         )
     }
 }
+
 
 class Day extends React.Component {
 
