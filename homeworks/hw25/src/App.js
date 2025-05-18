@@ -1,6 +1,14 @@
 import React from 'react'
 
 
+function saveDataToLocalStorage(key, data) {
+    localStorage.setItem(key, JSON.stringify(data))
+}
+
+function loadDataFromLocalStorage(key)  {
+    this.setState(JSON.parse(localStorage.getItem(key)) || this.state)
+}
+
 class App extends React.Component {
 
   state = {
@@ -33,23 +41,13 @@ class App extends React.Component {
       ]
   }
 
-
-    saveVotesToLocalStorage = (data) => {
-        localStorage.setItem('votes', JSON.stringify(data))
-    }
-
-    loadResultsFromLocalStorage = key => {
-        this.setState(JSON.parse(localStorage.getItem(key)) || this.state)
-    }
-
     componentDidMount() {
-        this.loadResultsFromLocalStorage('votes')
+        loadDataFromLocalStorage.call(this, 'votes')
    }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        this.saveVotesToLocalStorage(this.state)
+        saveDataToLocalStorage.call(this, 'votes', this.state)
     }
-
 
     handleEmojiCounter = (id) => {
         this.setState((prevState) => {
@@ -128,10 +126,6 @@ class Results extends React.Component {
         overallVotes: 0,
     }
 
-    constructor() {
-        super();
-    }
-
     handleResults = (appState) => {
         const maxVote = Math.max(...appState.emoji.map(em => em.votes));
         const winnersWithTheSameScore = appState.emoji.filter(
@@ -148,14 +142,6 @@ class Results extends React.Component {
         });
     }
 
-    saveResultsToLocalStorage = (data) => {
-        localStorage.setItem('voteResults', JSON.stringify(data))
-    }
-
-    loadResultsFromLocalStorage = key => {
-        this.setState(JSON.parse(localStorage.getItem(key)) || this.state)
-    }
-
     handleResetResults(onVotesReset) {
         this.setState({
             maxVote: 0,
@@ -168,11 +154,11 @@ class Results extends React.Component {
     }
 
     componentDidMount() {
-        this.loadResultsFromLocalStorage('voteResults')
+        loadDataFromLocalStorage.call(this, 'voteResults')
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        this.saveResultsToLocalStorage(this.state)
+    componentDidUpdate() {
+        saveDataToLocalStorage.call(this, 'voteResults', this.state)
     }
 
 
