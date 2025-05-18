@@ -71,8 +71,8 @@ class App extends React.Component {
   render() {
 
     return (
-        <div>
-            <div>
+        <div className="container">
+            <div className="emojies">
                 {this.state.emoji.map((emoji, index) =>
                     <Emoji
                         emoji={emoji.icon}
@@ -96,9 +96,8 @@ render() {
     const {emoji, votes, id, onEmojiClick} = this.props
 
     return (
-        <div>
-          <button onClick={() => onEmojiClick(id, 1)}>{emoji}</button>
-          <span>{votes}</span>
+        <div className="emoji">
+          <div onClick={() => onEmojiClick(id, 1)}>{emoji}: {votes}</div>
         </div>
     )
   }
@@ -167,10 +166,11 @@ class Results extends React.Component {
       const {state: appState, onVotesReset} = this.props
 
         return (
-        <div>
+        <div className="container">
             <Button onClickHandler={() => this.handleResults(appState)}>Show results</Button>
             <Button onClickHandler={() => this.handleResetResults(onVotesReset)}>Reset results</Button>
 
+            <div className="results">
             {this.state.numberOfWinners === 1 && (
                 <p>Our winner is {this.state.winnersWithTheSameScore.map(emoji => emoji.icon)}</p>
             )}
@@ -183,6 +183,7 @@ class Results extends React.Component {
               <p>Overall votes: {this.state.overallVotes}</p>
           )
     }
+            </div>
         </div>
     )
   }
