@@ -63,7 +63,6 @@ class App extends React.Component {
           const updatedEmoji = prevState.emoji.map(em => {
               return {...em, votes: 0}
           })
-
           return {emoji: updatedEmoji}
       })
     }
