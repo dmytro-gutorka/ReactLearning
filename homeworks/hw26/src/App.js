@@ -110,8 +110,6 @@ function App() {
                 key={emoji.id}
                 votes={emoji.votes}
                 onEmojiVotes={handleVotes}
-
-
             />
         )}
       </EmojiList>
@@ -150,7 +148,7 @@ function Emoji({ id, icon, votes, onEmojiVotes }) {
 }
 
 
-function Results({ winnersWithTheSameScore, numberOfWinners, overallVotes}) {
+function Results({ winnersWithTheSameScore, numberOfWinners, overallVotes }) {
 
   return (
       <div className="container">
@@ -171,7 +169,6 @@ function Button({ children, onClickHandler }) {
       </button>
   )
 }
-
 
 
 export default App;
