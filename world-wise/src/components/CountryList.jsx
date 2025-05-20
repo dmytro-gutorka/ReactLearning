@@ -15,8 +15,6 @@ export default function CountryList({ cities, isLoading }) {
         return newArr
     } ,[])
 
-    console.log(countries)
-
     return (
         <ul>
             {countries.map((country, index) => <CountryItem country={country} key={index}/>)}
