@@ -13,6 +13,8 @@ import Timer from "./components/Timer";
 import Footer from "./components/Footer";
 
 
+const SECS_PER_QUESTIONS = 30;
+
 const initialState = {
     questions: [],
     status: 'loading', // 'loading', 'error', 'ready', 'active', 'finished'
@@ -22,9 +24,6 @@ const initialState = {
     highScore: 0,
     secondsRemaining: null,
 }
-
-
-const SECS_PER_QUESTIONS = 30;
 
 
 function reducer(state, action) {
@@ -72,7 +71,6 @@ export default function App() {
 
     const numQuestions = questions.length
     const maxPossiblePoints = questions.reduce((acc, cur) => acc + cur.points ,0)
-
 
     useEffect(() => {
         fetch("http://localhost:8001/questions")
