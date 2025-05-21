@@ -7,7 +7,6 @@ import Message from "./Message";
 export default function CityList({ cities, isLoading }) {
 
     if (isLoading) return <Spinner/>
-
     if (!cities.length) return <Message message="Add your first city" />
 
     return (
