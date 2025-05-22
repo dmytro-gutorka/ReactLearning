@@ -43,7 +43,7 @@ function CitiesProvider({ children }) {
             setCurrentCity(data)
         }
         catch(err) {
-            alert ('There was an error fetching data')
+            alert ('There was an error fetching city')
         }
         finally {
             setIsLoading(false)
@@ -69,7 +69,21 @@ function CitiesProvider({ children }) {
             setCurrentCity(data)
         }
         catch(err) {
-            alert ('There was an error fetching data')
+            alert ('There was an error creating a city')
+        }
+        finally {
+            setIsLoading(false)
+        }
+    }
+
+    async function deleteCity(id) {
+        try {
+            setIsLoading(true)
+            await fetch(`${BASE_URL}/cities`, { method: 'POST' })
+            setCities(cities => cities.filter(city => city.id !== id))
+        }
+        catch(err) {
+            alert ('There was an error deleting a city')
         }
         finally {
             setIsLoading(false)
@@ -83,7 +97,8 @@ function CitiesProvider({ children }) {
             isLoading,
             currentCity,
             getCity,
-            createCity
+            createCity,
+            deleteCity
         }}>
             {children}
         </CitiesContext.Provider>
@@ -94,7 +109,7 @@ function CitiesProvider({ children }) {
 function useCities() {
     const context = useContext(CitiesContext)
 
-    if(!context) throw new Error('Cities context was used outside the CitiesProvider')
+    if (!context) throw new Error('Cities context was used outside the CitiesProvider')
 
     return context
 }
