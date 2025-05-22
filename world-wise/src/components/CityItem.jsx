@@ -12,7 +12,7 @@ export default function Map({ city }) {
         <li >
             <Link
                 className={`${styles.cityItem} ${id === currentCity.id ? styles['cityItem--active'] : ''}`}
-                to={`${city.id}?lan=${position.lat}&lng=${position.lng}`}>
+                to={`${city.id}?lat=${position.lat}&lng=${position.lng}`}>
             <span className={styles.emoji}>{emoji}</span>
             <h3 className={styles.name}>{cityName}</h3>
             <time className={styles.date}>{date}</time>
