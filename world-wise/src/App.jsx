@@ -1,14 +1,15 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { CitiesProvider } from './contexts/CitiesContext'
+import { AuthProvider } from "./contexts/FakeAuthContex";
 
+import PageNotFound from './pages/PageNotFound'
+import CountryList from "./components/CountryList";
+import AppLayout from './pages/AppLayout'
+import CityList from "./components/CityList";
+import Homepage from './pages/Homepage'
 import Product from './pages/Product'
 import Pricing from './pages/Pricing'
-import Homepage from './pages/Homepage'
-import AppLayout from './pages/AppLayout'
-import PageNotFound from './pages/PageNotFound'
 import Login from "./pages/Login";
-import CityList from "./components/CityList";
-import CountryList from "./components/CountryList";
 import City from "./components/City";
 import Form from "./components/Form";
 
@@ -16,6 +17,7 @@ import Form from "./components/Form";
 export default function App() {
 
     return (
+        <AuthProvider>
         <CitiesProvider>
         <BrowserRouter>
             <Routes>
@@ -34,5 +36,6 @@ export default function App() {
             </Routes>
         </BrowserRouter>
         </CitiesProvider>
+        </AuthProvider>
     )
 }
