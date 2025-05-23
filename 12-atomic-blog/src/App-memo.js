@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import {memo, useEffect, useMemo, useState} from "react";
 import { PostProvider, usePosts} from './PostContext'
 
 import { faker } from "@faker-js/faker";
@@ -12,12 +12,13 @@ function createRandomPost() {
 }
 
 
-const archiveOpt = {  show: false,
-    title: 'Post archive in addition'}
- 
 
 function App() {
     const [isFakeDark, setIsFakeDark] = useState(false);
+
+    const archiveOpt = useMemo(() => {
+        return { show: false, title: `Post archive in addition to ${isFakeDark}` }
+    }, [])
 
     console.log("App render");
 
@@ -164,7 +165,8 @@ const Archive = memo(
 
         // const { onAddPost } = usePosts();
 
-        console.log('Rerender')
+        console.log('Re-rerender Archive')
+
         const [showArchive, setShowArchive] = useState(archiveOpt.show);
         const [posts] = useState(() => Array.from({ length: 30000 },
             () => createRandomPost()));
