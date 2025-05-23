@@ -1,4 +1,4 @@
-import {memo, useEffect, useMemo, useState} from "react";
+import {memo, useCallback, useEffect, useMemo, useState} from "react";
 import { PostProvider, usePosts} from './PostContext'
 
 import { faker } from "@faker-js/faker";
@@ -12,15 +12,19 @@ function createRandomPost() {
 }
 
 
-
 function App() {
     const [isFakeDark, setIsFakeDark] = useState(false);
+
+    const [posts, setPosts] = useState(() =>
+        Array.from({ length: 30 }, () => createRandomPost()));
+
+    const handleAddPost = useCallback((post) => setPosts((posts) => [post, ...posts]), []);
 
     const archiveOpt = useMemo(() => {
         return { show: false, title: `Post archive in addition to ${isFakeDark}` }
     }, [])
 
-    console.log("App render");
+    console.log("App render"); 
 
     useEffect(() => {document.documentElement.classList.toggle("fake-dark-mode")}, [isFakeDark]);
 
@@ -33,9 +37,9 @@ function App() {
             {isFakeDark ? "☀️" : "🌙"}
         </button>
         <PostProvider>
-            <Header />
-            <Main />
-            <Archive archiveOpt={archiveOpt}/>
+            <Header posts={posts}/>
+            <Main posts={posts}/>
+            <Archive archiveOpt={archiveOpt} onAddPost={handleAddPost}/>
             <Footer />
         </PostProvider>
         </section>
@@ -43,7 +47,7 @@ function App() {
 }
 
 
-function Header() {
+function Header({posts}) {
 
     const { onClearPosts } = usePosts()
 
@@ -53,7 +57,7 @@ function Header() {
                 <span>⚛️</span>The Atomic Blog
             </h1>
             <div>
-                <Results />
+                <Results posts={posts} />
                 <SearchPosts />
                 <button onClick={onClearPosts}>Clear posts</button>
             </div>
@@ -76,30 +80,28 @@ function SearchPosts() {
 }
 
 
-function Results() {
-
-    const {posts} = usePosts()
+function Results({ posts }) {
 
     return <p>🚀 {posts.length} atomic posts found</p>;
 }
 
 
-function Main() {
+function Main({ posts }) {
 
     return (
         <main>
             <FormAddPost />
-            <Posts />
+            <Posts posts={posts}/>
         </main>
     );
 }
 
 
-function Posts() {
+function Posts({ posts }) {
 
     return (
         <section>
-            <List />
+            <List posts={posts}/>
         </section>
     );
 }
@@ -142,9 +144,7 @@ function FormAddPost() {
 
 
 
-function List() {
-
-    const {posts} = usePosts()
+function List({posts}) {
 
     return (
         <>
@@ -161,9 +161,7 @@ function List() {
 }
 
 const Archive = memo(
-    function Archive({ archiveOpt }) {
-
-        // const { onAddPost } = usePosts();
+    function Archive({ archiveOpt, onAddPost }) {
 
         console.log('Re-rerender Archive')
 
@@ -185,7 +183,7 @@ const Archive = memo(
                                 <p>
                                     <strong>{post.title}:</strong> {post.body}
                                 </p>
-                                {/*<button onClick={() => onAddPost(post)}>Add as new post</button>*/}
+                                <button onClick={() => onAddPost(post)}>Add as new post</button>
                             </li>
                         ))}
                     </ul>

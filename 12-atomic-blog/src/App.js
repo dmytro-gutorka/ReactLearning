@@ -16,6 +16,7 @@ function createRandomPost() {
 function App() {
     const [isFakeDark, setIsFakeDark] = useState(false);
 
+
     useEffect(() => {document.documentElement.classList.toggle("fake-dark-mode")}, [isFakeDark]);
 
     return (
