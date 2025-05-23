@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { PostProvider, usePosts} from './PostContext'
+import {memo, useEffect, useState} from "react";
+import { PostProvider, usePosts } from './PostContext'
 
 import { faker } from "@faker-js/faker";
 import Test from "./Test";
@@ -15,7 +15,6 @@ function createRandomPost() {
 
 function App() {
     const [isFakeDark, setIsFakeDark] = useState(false);
-
 
     useEffect(() => {document.documentElement.classList.toggle("fake-dark-mode")}, [isFakeDark]);
 
@@ -79,15 +78,17 @@ function Results() {
 }
 
 
-function Main() {
+const Main = memo(
+    function Main() {
 
-    return (
-        <main>
-            <FormAddPost />
-            <Posts />
-        </main>
-    );
-}
+        return (
+            <main>
+                <FormAddPost />
+                <Posts />
+            </main>
+        );
+    }
+)
 
 
 function Posts() {
@@ -151,7 +152,6 @@ function List() {
                     </li>
                 ))}
             </ul>
-            <Test />
         </>
     );
 }

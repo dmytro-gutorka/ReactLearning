@@ -14,17 +14,14 @@ function createRandomPost() {
 
 function App() {
     const [isFakeDark, setIsFakeDark] = useState(false);
-
-    const [posts, setPosts] = useState(() =>
-        Array.from({ length: 30 }, () => createRandomPost()));
+    const [posts, setPosts] = useState(() => Array.from({ length: 30 }, () => createRandomPost()));
 
     const handleAddPost = useCallback((post) => setPosts((posts) => [post, ...posts]), []);
-
     const archiveOpt = useMemo(() => {
         return { show: false, title: `Post archive in addition to ${isFakeDark}` }
     }, [])
 
-    console.log("App render"); 
+    console.log("App render");
 
     useEffect(() => {document.documentElement.classList.toggle("fake-dark-mode")}, [isFakeDark]);
 
