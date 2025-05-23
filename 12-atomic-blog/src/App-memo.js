@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { PostProvider, usePosts} from './PostContext'
 
 import { faker } from "@faker-js/faker";
-import Test from "./Test";
 
 
 function createRandomPost() {
@@ -13,8 +12,14 @@ function createRandomPost() {
 }
 
 
+const archiveOpt = {  show: false,
+    title: 'Post archive in addition'}
+ 
+
 function App() {
     const [isFakeDark, setIsFakeDark] = useState(false);
+
+    console.log("App render");
 
     useEffect(() => {document.documentElement.classList.toggle("fake-dark-mode")}, [isFakeDark]);
 
@@ -29,7 +34,7 @@ function App() {
         <PostProvider>
             <Header />
             <Main />
-            <Archive />
+            <Archive archiveOpt={archiveOpt}/>
             <Footer />
         </PostProvider>
         </section>
@@ -150,42 +155,43 @@ function List() {
                     </li>
                 ))}
             </ul>
-            <Test />
         </>
     );
 }
 
-function Archive() {
+const Archive = memo(
+    function Archive({ archiveOpt }) {
 
+        // const { onAddPost } = usePosts();
 
-    const {onAddPost} = usePosts();
+        console.log('Rerender')
+        const [showArchive, setShowArchive] = useState(archiveOpt.show);
+        const [posts] = useState(() => Array.from({ length: 30000 },
+            () => createRandomPost()));
 
-    const [showArchive, setShowArchive] = useState(false);
-    const [posts] = useState(() => Array.from({ length: 10000 }, () => createRandomPost()));
-    // 💥 WARNING: This might make your computer slow! Try a smaller `length` first
+        return (
+            <aside>
+                <h2>{archiveOpt.title}</h2>
+                <button onClick={() => setShowArchive((s) => !s)}>
+                    {showArchive ? "Hide archive posts" : "Show archive posts"}
+                </button>
 
-    return (
-        <aside>
-            <h2>Post archive</h2>
-            <button onClick={() => setShowArchive((s) => !s)}>
-                {showArchive ? "Hide archive posts" : "Show archive posts"}
-            </button>
-
-            {showArchive && (
-                <ul>
-                    {posts.map((post, i) => (
-                        <li key={i}>
-                            <p>
-                                <strong>{post.title}:</strong> {post.body}
-                            </p>
-                            <button onClick={() => onAddPost(post)}>Add as new post</button>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </aside>
-    );
-}
+                {showArchive && (
+                    <ul>
+                        {posts.map((post, i) => (
+                            <li key={i}>
+                                <p>
+                                    <strong>{post.title}:</strong> {post.body}
+                                </p>
+                                {/*<button onClick={() => onAddPost(post)}>Add as new post</button>*/}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </aside>
+        );
+    }
+)
 
 
 function Footer() {
