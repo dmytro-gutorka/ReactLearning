@@ -2,7 +2,6 @@ import {memo, useEffect, useState} from "react";
 import { PostProvider, usePosts } from './PostContext'
 
 import { faker } from "@faker-js/faker";
-import Test from "./Test";
 
 
 function createRandomPost() {
@@ -137,7 +136,6 @@ function FormAddPost() {
 }
 
 
-
 function List() {
 
     const {posts} = usePosts()
@@ -156,8 +154,8 @@ function List() {
     );
 }
 
-function Archive() {
 
+function Archive() {
 
     const {onAddPost} = usePosts();
 
@@ -177,7 +175,7 @@ function Archive() {
                     {posts.map((post, i) => (
                         <li key={i}>
                             <p>
-                                <strong>{post.title}:</strong> {post.body}
+                                <strong>{post.title}: </strong> {post.body}
                             </p>
                             <button onClick={() => onAddPost(post)}>Add as new post</button>
                         </li>
@@ -192,5 +190,6 @@ function Archive() {
 function Footer() {
     return <footer>&copy; by The Atomic Blog ✌️</footer>;
 }
+
 
 export default App;
