@@ -32,10 +32,10 @@ const fakeCart = [
 
 function CreateOrder() {
 
-  const navigation = useNavigation()
-  const isSubmitting = navigation.state === 'submitting'
-
   const formErrors = useActionData()
+  const navigation = useNavigation()
+
+  const isSubmitting = navigation.state === 'submitting'
 
   const cart = fakeCart;
 
@@ -99,7 +99,7 @@ export async function action({ request }) {
 
   if (!isValidPhone(order.phone)) errors.phone =
       "Please give us your correct phone number. We might need to contact you"
-  if(Object.keys(errors).length > 0) return errors
+  if (Object.keys(errors).length > 0) return errors
 
   const newOrder = await createOrder(order)
 
