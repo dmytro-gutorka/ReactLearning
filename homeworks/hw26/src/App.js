@@ -1,10 +1,12 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
+
 import loadDataFromLocalStorage from "./utils/loadDataFromLocalStorage";
 import saveDataToLocalStorage from "./utils/saveDataToLocalStorage";
-import EmojiList from "./EmojiList";
-import Emoji from "./Emoji";
-import Button from "./Button";
-import Results from "./Results";
+import Button from "./Button/Button";
+import EmojiList from "./EmojiList/EmojiList";
+import Results from "./Results/Results";
+import Emoji from "./Emoji/Emoji";
+
 
 
 const items = [
