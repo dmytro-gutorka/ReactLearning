@@ -10,6 +10,7 @@ export default function Button({ children, disabled, to, type, onClick }) {
 
   const styles = {
     primary: baseStyles + " px-4 py-3 md:px-6 md:px-4",
+    round: baseStyles + " px-5 py-1.5 md:px-3.5 md:px-3 text-sm",
     small: baseStyles + " px-4 py-2 md:px-5 md:px-2.5 text-xs",
     secondary: "px-4 py-2.5 md:px-6 md:px-3.5 bg-transparent border-2 border-stone-300 " +
       "text-stone-400 uppercase font-semibold inline-block tracking-wide " +
