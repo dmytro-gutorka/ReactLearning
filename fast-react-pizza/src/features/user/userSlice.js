@@ -50,7 +50,7 @@ const userSlice = createSlice({
       .addCase(
         fetchAddress.fulfilled,
         (state, action) => {
-          state.state = 'idle'
+          state.status = 'idle'
           state.position = action.payload.position
           state.address = action.payload.address
         })

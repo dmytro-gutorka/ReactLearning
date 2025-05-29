@@ -2,7 +2,7 @@ import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, getCart, getTotalCartPrice } from "../cart/cartSlice";
-import { fetchAddress, getUserName } from "../user/userSlice";
+import { fetchAddress } from "../user/userSlice";
 
 import Button from "../../ui/Button";
 import EmptyCart from "../cart/EmptyCart";
@@ -19,10 +19,14 @@ const isValidPhone = (str) =>
 function CreateOrder() {
   const [withPriority, setWithPriority] = useState()
 
+  const { username, status: addressStatus, address, error: errorAddress, position } = useSelector(state => state.user)
+
+  const isLoadingAddress = addressStatus === 'loading'
+  const hasPosition = position.latitude && position.longitude
+
   const formErrors = useActionData()
   const navigation = useNavigation()
 
-  const username = useSelector(getUserName)
   const cart = useSelector(getCart)
   const totalCartPrice = useSelector(getTotalCartPrice)
   const priorityPrice = withPriority ? totalCartPrice * 0.2 : 0
@@ -37,8 +41,6 @@ function CreateOrder() {
   return (
     <div className="px-4 py-6">
       <h2 className="mb-8 text-xl font-semibold">Ready to order? Let&#39;s go!</h2>
-
-      <button onClick={() => dispatch(fetchAddress())}>Get position</button>
 
       <Form method="POST">
         <div className="mb-5 flex gap-2 flex-col sm:flex-row sm:items-center">
@@ -62,8 +64,23 @@ function CreateOrder() {
               name="address"
               className="input w-full"
               required
+              disabled={isLoadingAddress}
+              defaultValue={address}
             />
+            {addressStatus === 'error' && <p className="text-xs mt-2 text-red-700 p-2 rounded-md bg-red-100 w-4/5 text-center mr-auto">{errorAddress}</p>}
+
           </div>
+          {!address && (
+            <Button
+              disabled={isLoadingAddress}
+              type="small"
+              onClick={(e) => {
+                e.preventDefault()
+                dispatch(fetchAddress())
+              }}>
+              Get position
+            </Button>
+          )}
         </div>
 
         <div className="mb-12 flex items-center gap-5">
@@ -80,7 +97,9 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name='cart' value={JSON.stringify(cart)} />
-            <Button disabled={isSubmitting} type="primary">
+          <input type="hidden" name='posirion' value={hasPosition ? `${position.latitude},${position.longitude}` : ''} />
+
+          <Button disabled={isSubmitting} type="primary">
               {isSubmitting ? "Placing order..." : `Order now from ${formatCurrency(totalPrice)}`}
             </Button>
         </div>
