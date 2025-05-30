@@ -19,22 +19,21 @@ const isValidPhone = (str) =>
 function CreateOrder() {
   const [withPriority, setWithPriority] = useState()
 
-  const { username, status: addressStatus, address, error: errorAddress, position } = useSelector(state => state.user)
-
-  const isLoadingAddress = addressStatus === 'loading'
-  const hasPosition = position.latitude && position.longitude
+  const { username, status: addressStatus, address, error: errorAddress, position } =
+    useSelector(state => state.user)
 
   const formErrors = useActionData()
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   const cart = useSelector(getCart)
   const totalCartPrice = useSelector(getTotalCartPrice)
   const priorityPrice = withPriority ? totalCartPrice * 0.2 : 0
   const totalPrice = totalCartPrice + priorityPrice
 
+  const isLoadingAddress = addressStatus === 'loading'
+  const hasPosition = position.latitude && position.longitude
   const isSubmitting = navigation.state === 'submitting'
-
-  const dispatch = useDispatch()
 
   if (!cart.length) return <EmptyCart/>
 
