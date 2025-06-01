@@ -1,16 +1,16 @@
-import store from "./store";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useSelector } from "react-redux";
 
 
 export default function Counter() {
-  const val = useSelector(state => state.value)
+  const value = useSelector(state => state.value)
+  const dispatch = useDispatch()
 
   return (
     <div>
-       <button onClick={() => store.dispatch({ type: 'increase' })}>+</button>
-      <span>{val}</span>
-      <button onClick={() => store.dispatch({ type: 'decrease' })}>-</button>
+       <button onClick={() => dispatch({ type: 'increase' })}>+</button>
+      <span>{value}</span>
+      <button onClick={() => dispatch({ type: 'decrease' })}>-</button>
     </div>
   )
 }
