@@ -14,7 +14,7 @@ export default function CreatePost() {
       </label>
 
       <label>
-        views
+        Views
         <input type="text" name="views"/>
       </label>
 
