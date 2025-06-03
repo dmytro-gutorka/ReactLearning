@@ -1,4 +1,4 @@
-import { Form, useFetcher } from "react-router";
+import { useFetcher } from "react-router";
 
 
 export default function CreatePost() {
@@ -6,7 +6,7 @@ export default function CreatePost() {
   const fetcher = useFetcher()
 
   return (
-    <fetcher.Form action='/todo' method="post">
+    <fetcher.Form action='/todo' method="post" className='flex flex-col gap-5'>
 
       <label>
         Title
@@ -14,16 +14,16 @@ export default function CreatePost() {
       </label>
 
       <label>
-        Body
-        <input type="text" name="body"/>
+        views
+        <input type="text" name="views"/>
       </label>
 
       <label>
-        userId
-        <input type="text" name="userId" />
+        id
+        <input type="text" name="id" />
       </label>
 
-      <button>Create</button>
+      <button type="submit" className="self-start bg-yellow-200">Create</button>
 
     </fetcher.Form>
   )

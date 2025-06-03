@@ -1,11 +1,14 @@
+import { redirect } from "react-router";
+
+
 export const getTodos = async() => {
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts')
+  const res = await fetch('http://localhost:3000/posts')
   return await res.json()
 }
 
 
 export const getTodo = async({ params }) => {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}`)
+  const res = await fetch(`http://localhost:3000/posts/${params.id}`)
   return await res.json()
 }
 
@@ -14,7 +17,7 @@ export const createPost = async({ request }) => {
   const response = await request.formData()
   const formData = Object.fromEntries(response)
 
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+  await fetch('http://localhost:3000/posts', {
     method: 'POST',
     body: JSON.stringify(formData),
     headers: {
@@ -22,5 +25,5 @@ export const createPost = async({ request }) => {
     },
   })
 
-  console.log(res)
+  return redirect(`/todo/${formData.id}`, { status: 301})
 }

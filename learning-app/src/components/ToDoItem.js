@@ -5,7 +5,7 @@ export default function ToDoItem({ todo }) {
 
   const todoById = useLoaderData()
 
-  const { id, title, body } = todo || todoById
+  const { id, title, views } = todo || todoById
 
   return (
     <div>
@@ -13,7 +13,7 @@ export default function ToDoItem({ todo }) {
         <span>{id}</span>
         <Link className="italic" to={`${id}`}>{title}</Link>
       </div>
-      <div>{body}</div>
+      <div>{views}</div>
     </div>
   )
 }

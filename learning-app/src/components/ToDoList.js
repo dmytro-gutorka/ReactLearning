@@ -1,11 +1,11 @@
-import { useFetcher, useLoaderData } from "react-router";
+import { useLoaderData } from "react-router";
 import ToDoItem from "./ToDoItem";
 import CreatePost from "./CreatePost";
 
 
 export default function ToDoList() {
   const todos = useLoaderData()
-  const limitedArr = todos.slice(0, 101)
+  const limitedArr = todos.slice(0, 200)
 
   return (
     <div>

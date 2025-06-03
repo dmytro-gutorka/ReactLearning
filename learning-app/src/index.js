@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
+import { createPost, getTodo, getTodos } from "./services/todo";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import React from "react";
 import ReactDOM from 'react-dom/client';
@@ -9,9 +11,7 @@ import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import AppLayout from "./components/AppLayout";
 import ToDoList from "./components/ToDoList";
-import { createPost, getTodo, getTodos } from "./services/todo";
 import ToDoItem from "./components/ToDoItem";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 
 const queryClient = new QueryClient()
