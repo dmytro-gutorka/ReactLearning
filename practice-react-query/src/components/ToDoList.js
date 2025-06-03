@@ -1,24 +1,28 @@
-import ToDoItem from "./ToDoItem";
 import CreatePost from "./CreatePost";
-import { useQuery } from "@tanstack/react-query";
+
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { getTodo, getTodos } from "../services/todo";
+import ToDoItem from "./ToDoItem";
 
 
 export default function ToDoList() {
 
-  const { isPending, isError, error, data } = useQuery({
+  const { isPending, isError, error, data: postsIds } = useQuery({
     queryKey: ['posts'],
     queryFn: getTodos,
+    select: (posts) => posts.map(post => post.id)
   })
 
-  const postId = data ? data[0]?.id : undefined
-
-  const queryPerPost = useQuery({
-    queryKey: ['posts', postId],
-    queryFn: () => getTodo(postId),
-    enabled: !!postId
+  const allPosts = useQueries({
+    queries: postsIds
+      ? postsIds.map(id => {
+        return {
+          queryKey: ['post', id],
+          queryFn: () => getTodo(id),
+        }
+      })
+      : [],
   })
-
 
   if (isPending) {
     return <p>Loading...</p>
@@ -28,12 +32,24 @@ export default function ToDoList() {
     return <p>{error.message}</p>
   }
 
-  console.log(1, queryPerPost)
+  const isLoadingPosts = allPosts.some(query => query.isLoading)
+  const hasErrorPosts = allPosts.some(query => query.isLoading)
+
+  if (isLoadingPosts) {
+    return <p>Loading individual posts...</p>
+  }
+
+  if (hasErrorPosts) {
+    return <p>Failed to load some posts</p>
+  }
+
+  const postsData = allPosts.map(query => query.data)
+
 
   return (
     <div>
         <ul className="flex gap-3 flex-col">
-          {data.map((todo, index) => (<ToDoItem todo={todo} key={index}/>))}
+          {postsData.map((todo, index) => (<ToDoItem todo={todo} key={index}/>))}
         </ul>
       <CreatePost />
     </div>

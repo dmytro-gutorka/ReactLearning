@@ -20,7 +20,7 @@ export default function CreatePost() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
+    <form onSubmit={handleSubmit} className='flex flex-col gap-5 bg-stone-100'>
 
       <label>
         Title
