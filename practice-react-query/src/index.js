@@ -12,8 +12,9 @@ import Contacts from "./pages/Contacts";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import AppLayout from "./components/AppLayout";
-import ToDoList from "./components/ToDoList";
 import ToDoDetails from "./components/ToDoDetails";
+import ToDoListInfiniteScroll from "./components/ToDoListInfiniteScroll";
+import MovieItem from "./components/MovieItem";
 
 
 const queryClient = new QueryClient()
@@ -29,8 +30,8 @@ const router = createBrowserRouter([
       { path: '/login', Component: Login },
       { path: '/todo',
         children: [
-          { index: true, Component: ToDoList },
-          { path: ':id', Component: ToDoDetails },
+          { index: true, Component: ToDoListInfiniteScroll },
+          { path: ':id', Component: MovieItem },
         ]
       }
     ]

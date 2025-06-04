@@ -10,20 +10,11 @@ export default function ToDoList() {
 
   const [page, setPage] = useState(1)
 
-  const queryClient = useQueryClient()
-
-  // const { isError, error, isLoading, data } = useQuery({
-  //   queryKey: ['posts'],
-  //   queryFn: getTodos,
-  // })
-
-  const { isError, error, isLoading, data, isPending, isPlaceholderData} = useQuery({
+  const { isError, error, data, isPending, isPlaceholderData} = useQuery({
     queryKey: ['movies', page],
     queryFn: () => getMoviesPerPage(page),
     placeholderData: keepPreviousData,
-
   })
-
 
   if (isPending) {
     toast.loading('Loading...', { id: 'loading-toast' })
@@ -36,9 +27,6 @@ export default function ToDoList() {
 
   toast.dismiss('loading-toast')
   toast.success('Data has been loaded')
-
-  if (data) console.log(data)
-
 
   return (
     <div>
@@ -53,11 +41,6 @@ export default function ToDoList() {
         <span>{page}</span>
         <button onClick={() => setPage(page => page + 1)}>Next Page</button>
       </div>
-
-      {/*  <ul className="flex gap-3 flex-col">*/}
-      {/*    {data.map((todo, index) => (<ToDoItem todo={todo} key={index}/>))}*/}
-      {/*  </ul>*/}
-      {/*<CreatePost />*/}
     </div>
   )
 }

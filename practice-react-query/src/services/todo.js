@@ -1,8 +1,3 @@
-
-// const API_KEY = 'd0e93483'
-//
-// &apikey=d0e93483
-
 const options = {
   method: 'GET',
   headers: {
@@ -24,7 +19,6 @@ export const getTodos = async() => {
   catch(error) {
     throw error
   }
-
 }
 
 
@@ -61,9 +55,35 @@ export const createPost = async(formData) => {
   }
 }
 
-export const getMoviesPerPage = async (page) =>  {
-  const response = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc&with_genres=12&page=${page}`, options)
-  return await response.json()
+export const getMoviesPerPage = async ({pageParam}) =>  {
+
+  try {
+    const response = await fetch(`https://api.themoviedb.org/3/discover/movie?
+  include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc&with_genres=12&page=${pageParam}`, options)
+    if (!response.ok) throw new Error("Could not load a page with movies")
+
+    return await response.json()
+  }
+
+  catch(err) {
+    throw err
+  }
 }
 
+
+export const getMovieById = async (id) =>  {
+  console.log(1)
+
+  try {
+    const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options)
+
+    if (!response.ok) throw new Error("Could not load a page with movies")
+
+    return await response.json()
+  }
+
+  catch(err) {
+    throw err
+  }
+}
 
