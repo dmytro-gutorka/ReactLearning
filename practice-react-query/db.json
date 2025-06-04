@@ -1,41 +1,26 @@
 {
   "posts": [
     {
-      "id": "1",
-      "title": "a title",
-      "views": 100
-    },
-    {
       "id": "2",
-      "title": "another title",
-      "views": 200
+      "title": "sf",
+      "views": "sdf"
     },
     {
-      "id": "3",
-      "title": "gsgd",
-      "views": "34"
-    },
-    {
-      "id": "4",
-      "title": "fdfh",
-      "views": "dfh"
-    },
-    {
-      "id": "5",
-      "title": "dfg",
-      "views": "dfg"
+      "id": "8",
+      "title": "sf",
+      "views": "sdf"
     }
   ],
   "comments": [
     {
       "id": "1",
       "text": "a comment about post 1",
-      "postId": "1"
+      "postId": null
     },
     {
       "id": "2",
       "text": "another comment about post 1",
-      "postId": "1"
+      "postId": null
     }
   ],
   "profile": {

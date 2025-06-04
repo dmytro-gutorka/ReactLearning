@@ -1,8 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Toaster } from 'react-hot-toast';
 
-
+import './index.css'
 import React from "react";
 import ReactDOM from 'react-dom/client';
 
@@ -22,9 +23,9 @@ const router = createBrowserRouter([
   {
     Component: AppLayout,
     children: [
+      { path: '/', Component: Homepage },
       { path: '/about', Component: About},
       { path: '/contacts', Component: Contacts },
-      { path: '/', Component: Homepage },
       { path: '/login', Component: Login },
       { path: '/todo',
         children: [
@@ -42,9 +43,8 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router}/>
+      <Toaster />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>
 );
-
-

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPost } from "../services/todo";
+import toast from "react-hot-toast";
 
 export default function CreatePost() {
 
@@ -7,7 +8,10 @@ export default function CreatePost() {
 
   const mutation = useMutation({
     mutationFn: (formData) => createPost(formData),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['posts'] }),
+    onSuccess: () => {
+      toast.success('Successfully created!', { position: "top-right"});
+      return queryClient.invalidateQueries({ queryKey: ['posts'] })
+    },
     onError: (error) => console.log(error)
   })
 

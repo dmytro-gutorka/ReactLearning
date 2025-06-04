@@ -12,11 +12,9 @@ export default function ToDoDetails() {
     queryFn: () => getTodo(postId)
   })
 
-
   if (isPending) {
     return <p>Post loading....</p>
   }
-
 
   return (
     <div>

@@ -1,30 +1,32 @@
-import CreatePost from "./CreatePost";
-
-import { useQueries, useQuery } from "@tanstack/react-query";
-import { getTodo, getTodos } from "../services/todo";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getMoviesPerPage, getTodos } from "../services/todo";
 import ToDoItem from "./ToDoItem";
+import CreatePost from "./CreatePost";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 
 export default function ToDoList() {
 
-  const { isPending, isError, error, data: postsIds } = useQuery({
-    queryKey: ['posts'],
-    queryFn: getTodos,
-    select: (posts) => posts.map(post => post.id)
+  const [page, setPage] = useState(1)
+
+  const queryClient = useQueryClient()
+
+  // const { isError, error, isLoading, data } = useQuery({
+  //   queryKey: ['posts'],
+  //   queryFn: getTodos,
+  // })
+
+  const { isError, error, isLoading, data, isPending, isPlaceholderData} = useQuery({
+    queryKey: ['movies', page],
+    queryFn: () => getMoviesPerPage(page),
+    placeholderData: keepPreviousData,
+
   })
 
-  const allPosts = useQueries({
-    queries: postsIds
-      ? postsIds.map(id => {
-        return {
-          queryKey: ['post', id],
-          queryFn: () => getTodo(id),
-        }
-      })
-      : [],
-  })
 
   if (isPending) {
+    toast.loading('Loading...', { id: 'loading-toast' })
     return <p>Loading...</p>
   }
 
@@ -32,26 +34,30 @@ export default function ToDoList() {
     return <p>{error.message}</p>
   }
 
-  const isLoadingPosts = allPosts.some(query => query.isLoading)
-  const hasErrorPosts = allPosts.some(query => query.isLoading)
+  toast.dismiss('loading-toast')
+  toast.success('Data has been loaded')
 
-  if (isLoadingPosts) {
-    return <p>Loading individual posts...</p>
-  }
-
-  if (hasErrorPosts) {
-    return <p>Failed to load some posts</p>
-  }
-
-  const postsData = allPosts.map(query => query.data)
+  if (data) console.log(data)
 
 
   return (
     <div>
-        <ul className="flex gap-3 flex-col">
-          {postsData.map((todo, index) => (<ToDoItem todo={todo} key={index}/>))}
-        </ul>
-      <CreatePost />
+      <div>
+        {data.page}
+        {data.results.map(movie => (
+          <p key={movie.id}>{movie.title}</p>
+        ))}
+      </div>
+      <div>
+        <button onClick={() => setPage(page => page - 1)}>Prev Page</button>
+        <span>{page}</span>
+        <button onClick={() => setPage(page => page + 1)}>Next Page</button>
+      </div>
+
+      {/*  <ul className="flex gap-3 flex-col">*/}
+      {/*    {data.map((todo, index) => (<ToDoItem todo={todo} key={index}/>))}*/}
+      {/*  </ul>*/}
+      {/*<CreatePost />*/}
     </div>
   )
 }
