@@ -12,7 +12,7 @@ export default function ToDoListInfiniteScroll() {
     getNextPageParam: (lastPage) => lastPage.page + 1,
     select: (data) => data.pages[0].results,
     retry: 2,
-    staleTime: 1000 * 60,
+    staleTime: Infinity,
     initialDataUpdatedAt: Date.now()
   })
 
@@ -29,6 +29,7 @@ export default function ToDoListInfiniteScroll() {
             </p>
           ))}
       </div>
+
       <div>
         <button
           onClick={() => fetchNextPage()}
@@ -38,6 +39,7 @@ export default function ToDoListInfiniteScroll() {
           {hasNextPage? 'Load More': 'Nothing more to load'}
         </button>
       </div>
+
       <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
     </div>
   )

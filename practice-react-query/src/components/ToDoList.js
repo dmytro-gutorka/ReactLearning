@@ -1,19 +1,23 @@
-import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getMoviesPerPage, getTodos } from "../services/todo";
-import ToDoItem from "./ToDoItem";
-import CreatePost from "./CreatePost";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { getTodos } from "../services/todo";
 
 
 export default function ToDoList() {
 
-  const [page, setPage] = useState(1)
+  const queryClient = useQueryClient()
 
-  const { isError, error, data, isPending, isPlaceholderData} = useQuery({
-    queryKey: ['movies', page],
-    queryFn: () => getMoviesPerPage(page),
-    placeholderData: keepPreviousData,
+  const mutation = useMutation({
+    mutationFn: () => 1,
+    onSuccess: (data) => {
+      console.log(data)
+      queryClient.setQueryData(['posts'], data)
+    }
+  })
+
+  const { isError, error, data, isPending} = useQuery({
+    queryKey: ['posts'],
+    queryFn: getTodos
   })
 
   if (isPending) {
@@ -31,16 +35,34 @@ export default function ToDoList() {
   return (
     <div>
       <div>
-        {data.page}
-        {data.results.map(movie => (
-          <p key={movie.id}>{movie.title}</p>
+        {data?.map(item => (
+          <p key={item.id}>{item.title}</p>
         ))}
       </div>
-      <div>
-        <button onClick={() => setPage(page => page - 1)}>Prev Page</button>
-        <span>{page}</span>
-        <button onClick={() => setPage(page => page + 1)}>Next Page</button>
-      </div>
+      <form onSubmit={(e) => {
+        e.preventDefault()
+        mutation.mutate({ id: 10, title: 'my title'})
+      }}
+            className='flex flex-col gap-5 bg-stone-100'>
+
+        <label>
+          Title
+          <input type="text" name="title" />
+        </label>
+
+        <label>
+          Views
+          <input type="text" name="views"/>
+        </label>
+
+        <label>
+          id
+          <input type="text" name="id" />
+        </label>
+
+        <button type="submit" className="self-start bg-yellow-200">Create</button>
+
+      </form>
     </div>
   )
 }
