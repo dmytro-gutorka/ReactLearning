@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import { getMovieById } from "../services/todo";
 
+
 export default function MovieItem() {
 
   const { id: movieID } = useParams()
@@ -12,18 +13,23 @@ export default function MovieItem() {
     queryKey: ['movie', movieID],
     queryFn: () => getMovieById(movieID),
     initialData: () => {
-      return queryClient.getQueryData(['movies'])?.pages[0].results.find(movie => movie.id === +movieID)
-    },
-    initialDataUpdatedAt: queryClient.getQueryState(['movies'])?.dataUpdatedAt,
-    staleTime: 1000 * 5,
-  })
+      const state = queryClient.getQueryState(['movies'])
 
-  console.log(movie)
+      if (state && Date.now() - state.dataUpdatedAt <= 10 * 1000) {
+        console.log('Data from cache')
+        return state?.data.pages[0].results.find(movie => movie.id === +movieID)
+      }
+    },
+
+    initialDataUpdatedAt: queryClient.getQueryState(['movies'])?.dataUpdatedAt,
+    staleTime: 1000 * 15,
+  })
 
   return (
     <div>
       movie
-
     </div>
   )
 }
+
+// form.reset()

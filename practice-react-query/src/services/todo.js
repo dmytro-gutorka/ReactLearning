@@ -72,7 +72,7 @@ export const getMoviesPerPage = async ({pageParam}) =>  {
 
 
 export const getMovieById = async (id) =>  {
-  console.log(1)
+  console.log('Fetching getMovieById...')
 
   try {
     const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options)

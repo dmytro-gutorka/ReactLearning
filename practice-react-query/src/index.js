@@ -12,7 +12,6 @@ import Contacts from "./pages/Contacts";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import AppLayout from "./components/AppLayout";
-import ToDoDetails from "./components/ToDoDetails";
 import ToDoListInfiniteScroll from "./components/ToDoListInfiniteScroll";
 import MovieItem from "./components/MovieItem";
 

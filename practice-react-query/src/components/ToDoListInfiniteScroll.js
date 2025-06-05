@@ -12,9 +12,10 @@ export default function ToDoListInfiniteScroll() {
     getNextPageParam: (lastPage) => lastPage.page + 1,
     select: (data) => data.pages[0].results,
     retry: 2,
-    staleTime: 600000
-
+    staleTime: 1000 * 60,
+    initialDataUpdatedAt: Date.now()
   })
+
   if (status === 'pending') return (<p>Loading...</p>)
   if (status === 'error') return ( <p>{error.message}</p>)
 
